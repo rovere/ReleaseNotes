@@ -1,0 +1,39 @@
+destination: /Users/rovere/cernbox/www/ReleaseNotesJKL/
+title: CMSSW Release Notes
+email: marco.rovere@cern.ch
+description: >- # this means to ignore newlines until "baseurl:"
+
+  This is a collection of release notes for the CMSSW software project.
+
+baseurl: "/rovere/ReleaseNotesJKL" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+#twitter_username: jekyllrb
+github_username:  rovere
+
+# Build settings
+markdown: kramdown
+theme: minima
+
+collections:
+  releases:
+    output: true
+plugins:
+  - jekyll-feed
+
+# Limit the number of posts shown by default
+limit_posts: 5
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - release_notes.py
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - .git/
+  - .gitignore

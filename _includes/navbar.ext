@@ -1,0 +1,37 @@
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="{{ site.baseurl }}/index.html" class="navbar-brand">CMSSW Release Notes</a>
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+      </button> <!-- button class="navbar-toggle" -->
+    </div> <!-- div class="navbar-header" -->
+    <div class="navbar-collapse collapse" id="navbar-main">
+      <ul class="nav navbar-nav">
+        {% assign previous = 0 %}
+        {% assign ordered_releases = site.releases | sort: 'relmajor' %}
+        {% for rel in ordered_releases %}
+          {% assign current = rel.relmajor %}
+          {% if current != previous %}
+            {% if previous != 0 %}
+              </ul>
+              </li>
+            {% endif %}
+            {% assign previous = current %}
+            {% capture the_release %}Releases {{ rel.relmajor }} {% endcapture %}
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="{{ site.baseurl }}/index.html" id="activities_menu"> {{ the_release }} <span class="caret"></span></a>
+                <ul class="dropdown-menu" aria-labelledby="activities_menu">
+          {% endif %}
+            <li><a href="{{ site.baseurl}}/{{ rel.url }}">{{ rel.title }}</a></li>
+        {% endfor %}
+        </ul>
+      </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <a href="{{ site.baseurl }}/about.html" class="navbar-brand">About</a>
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main"></button>
+      </ul>
+    </div> <!-- div class="navbar-collapse collapse" id="navbar-main" -->
+  </div> <!-- div container -->
+</nav>
+

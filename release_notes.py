@@ -5,6 +5,7 @@ import StringIO
 import pycurl
 import re
 import fire
+from glob import glob
 from githubAPI import github_api_token
 from datetime import datetime as dt
 from collections import namedtuple
@@ -20,6 +21,16 @@ RX_COMPARE = re.compile("(https://github.*compare.*\.\.\..*)")
 Release = namedtuple("Release", ["major", "minor", "subminor", "pre", "cand", "patch"])
 
 DEBUG = True
+
+class tcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 def head(title, release):
     ret = "---\n"
@@ -102,6 +113,10 @@ def getReleasesNotes(selected_releases_regexp):
       counter += 1
       rel_numbers = re.match(RX_RELEASE, releases[i]['name'])
       if rel_numbers and re.match(selected_releases_regexp, releases[i]['name']):
+        # Check if we locally already have release notes for this specific release. If so, ignore it to avoid duplication.
+        if len(glob("*{release}*".format(release=releases[i]['name'].replace('CMSSW_', '')))):
+            print tcolors.BOLD + tcolors.WARNING + "Skipping release {release}".format(release=releases[i]['name']) + tcolors.ENDC
+            continue
         release_notes = re.sub(RX_COMMIT, '\\n1. [\\1](http://github.com/cms-sw/cmssw/pull/\\1){:target="_blank"} \\2', releases[i]['body'])
         release_notes = re.sub(RX_COMPARE, '[compare to previous](\\1)\n\n', release_notes)
         release_notes = re.sub(RX_AUTHOR, '\\1**\\2**', release_notes)
